@@ -83,3 +83,59 @@ const getBooksData= async function (req, res) {
 
 module.exports.createBook= createBook
 module.exports.getBooksData= getBooksData
+
+//assignment logic
+const createBook1= async function (req, res) {
+    let data= req.body
+
+    let savedData= await BookModel.create(data)
+    res.send({msg: savedData})
+}
+
+const bookList= async function (req, res) {
+    let allBooks= await BookModel.find( ).select({bookName :1 , authorName: 1 , _id :0
+    })
+    res.send({msg: allBooks})
+}
+
+const year= async function (req, res) {
+    let data =req.body.year
+    let allBooks= await BookModel.find({year:{$eq: data}})
+    res.send({msg: allBooks})
+}
+
+const avlability1= async function (req, res) {
+    let allBooks= await BookModel.find( [{stockAvailable:true} , {totalPage:{$gt :500}}])
+    
+   
+        
+    res.send({msg: allBooks})
+}
+
+//using REGEX
+
+const particularBooks= async function (req, res) {
+    let data= req.body
+
+    let savedData= await BookModel.find({bookName : /^p/i})
+    res.send({msg: savedData})
+}
+
+const inrBooks= async function (req, res) {
+    let allBooks= await BookModel.find({indianPrice:{$eq:200}})
+   
+        
+    res.send({msg: allBooks})
+}
+
+module.exports.create= createBook1
+module.exports.all= bookList
+module.exports.getBooksInYear= year
+module.exports.getRandomBooks=avlability1
+module.exports.getParticularBooks=particularBooks
+module.exports.getXINRBooks= inrBooks
+
+
+
+
+

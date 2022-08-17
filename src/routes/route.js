@@ -17,3 +17,16 @@ router.post("/createBook", BookController.createBook  )
 router.get("/getBooksData", BookController.getBooksData)
 
 module.exports = router;
+
+//assignment api
+
+router.post("/assignmentBook", BookController.create)
+router.get ("/getAllbook",BookController.all)
+router.post("/getBooksInYear", BookController.getBooksInYear)
+router.get ("/random",BookController.getRandomBooks)
+router.post ("/particular",BookController.getParticularBooks) //regex
+router.get ("/getXINRBooks",BookController.getXINRBooks)
+
+
+
+
