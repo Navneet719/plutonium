@@ -9,3 +9,15 @@ const authorSchema = new mongoose.Schema( {
 }, { timestamps: true });
 
 module.exports = mongoose.model('Author', authorSchema)
+//----------------------------
+
+const author = new mongoose.Schema( {
+    authorname : String,
+    age:Number,
+    address:String,
+    rating :Number,
+    
+}, { timestamps: true });
+module.exports = mongoose.model('refauthor', author)
+
+

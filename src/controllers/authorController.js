@@ -13,3 +13,13 @@ const getAuthorsData= async function (req, res) {
 
 module.exports.createAuthor= createAuthor
 module.exports.getAuthorsData= getAuthorsData
+//--------------------------------
+const author= async function (req, res) {
+    let authore = req.body
+    let authoreCreated = await AuthorModel.create(authore)
+    res.send({data: authoreCreated})
+}
+module.exports.createAuthor= author
+
+
+
