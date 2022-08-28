@@ -5,6 +5,7 @@ const UserController= require("../controllers/userController")
 const BookController= require("../controllers/bookController")
 const commonMW = require ("../middlewares/commonMiddlewares")
 
+const ordercontroller = require("../controllers/ordercontroller")
 //---------
 const product =require("../controllers/productController")
 const user =require("../controllers/newusercontroller")
@@ -63,7 +64,8 @@ router.get("/basicRoute", commonMW.mid1, commonMW.mid2, commonMW.mid3, commonMW.
 
 //--------------asssignment-----------------
 router.post("/product",product.creatProduct )
-router.post("/creatuser", user.creatuser)
+router.post("/creatuser",commonMW.middleware, user.creatuser)
+router.post("/creatoredr",commonMW.middleware ,ordercontroller.orderdata)
 
 
 

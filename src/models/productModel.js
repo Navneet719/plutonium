@@ -7,7 +7,8 @@ const product = new mongoose.Schema( {
 	price:{
       type : Number,
       required :true,
-    }
+    },
+    isFreeAppUser:Boolean
 
 }, { timestamps: true });
 
