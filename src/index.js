@@ -7,13 +7,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
-mongoose.connect("mongodb+srv://users-open-to-all:hiPassword123@cluster0.uh35t.mongodb.net/skDB?retryWrites=true&w=majority", {
-    useNewUrlParser: true
-})
-.then( () => console.log("MongoDb is connected"))
+mongoose.connect("mongodb+srv://navneet:Navneet719@cluster0.3oclrwu.mongodb.net/navneet?retryWrites=true&w=majority", { useNewUrlParser: true })
+.then( () => console.log("MongoDb Navneet is connected"))
 .catch ( err => console.log(err) )
-
 
 app.use('/', route)
 

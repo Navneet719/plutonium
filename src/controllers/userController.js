@@ -91,8 +91,162 @@ const updateUser = async function (req, res) {
   let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData);
   res.send({ status: updatedUser, data: updatedUser });
 };
-
 module.exports.createUser = createUser;
 module.exports.getUserData = getUserData;
 module.exports.updateUser = updateUser;
 module.exports.loginUser = loginUser;
+
+
+//assignment-----------
+const createUser1 = async function (req, res) {
+  try{
+  let data = req.body;
+  let savedData = await userModel.create(data);
+
+  res.send({ msg: savedData });
+  }
+  catch(err){
+    res.status(201).send({msg:"error",error:err})
+   }
+};
+module.exports.createUser1 = createUser1;
+
+
+const userlogin = async function (req, res) {
+  try{
+  let userName = req.body.emailId;
+  let password = req.body.password;
+
+  let user = await userModel.findOne({ emailId: userName, password: password });
+  if (!user)
+    return res.send({ status: false, msg: "username or the password is not corerct", });
+
+  //create the jwt and send it in res
+
+  let token = jwt.sign(
+    {
+      userId: user._id.toString(),
+      batch: "plutonium",
+      organisation: "FunctionUp",
+    },
+    "functionup-plutonium-very-very-secret-key"
+  );
+  res.setHeader("x-auth-token", token);
+  res.send({ status: true, token: token });
+  }
+  catch(err){
+    res.status(401).send({msg:"error",error:err})
+   }
+};
+module.exports.userlogin = userlogin;
+
+const getUser = async function (req, res) {
+  try{
+  let token = req.headers["x-Auth-token"];
+  if (!token) token = req.headers["x-auth-token"];
+
+
+  if (!token) return res.send({ status: false, msg: "token must be present" });
+
+  let decodedToken = jwt.verify(token, "functionup-plutonium-very-very-secret-key");
+  if (!decodedToken)
+    return res.send({ status: false, msg: "token is invalid" });
+
+  let userId = req.params.userId;
+  let userDetails = await userModel.findById(userId);
+  if (!userDetails)
+    return res.send({ status: false, msg: "No such user exists" });
+
+  res.send({ status: true, data: userDetails });
+  }
+  catch(err){
+    res.status(405).send({msg:"error",error:err})
+   }
+}
+
+
+module.exports.getUser = getUser;
+
+
+const update = async function (req, res) {
+
+  let token = req.headers["x-Auth-token"];
+  if (!token) token = req.headers["x-auth-token"];
+  let decodedToken = jwt.verify(token, "functionup-plutonium-very-very-secret-key");
+  let userLoggedIndata= req.params.userId
+  let userLoggedIn = decodedToken.userId
+  if (userLoggedIndata!=userLoggedIn){
+    return res.send({status :false , msg:"invalid user id"})
+  }
+
+
+  if (!token) return res.send({ status: false, msg: "token is invalid" });
+  
+  let userId = req.params.userId;
+  let user = await userModel.findById(userId);
+
+  if (!user) {
+    return res.send("No such user exists");
+  }
+
+  let userData = req.body;
+  let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData);
+  res.send({ status: updatedUser, data: updatedUser });
+};
+module.exports.update = update;
+
+
+//---------authorization------
+// const Userdetils = async function (req, res) {
+//   let token = req.headers["x-Auth-token"];
+//   if (!token) token = req.headers["x-auth-token"];
+
+
+//   if (!token) return res.send({ status: false, msg: "token must be present" });
+
+//   let decodedToken = jwt.verify(token, "functionup-plutonium-very-very-secret-key");
+
+//   let userData = req.params.userId
+//   let userLoggedIn = decodedToken.userId
+//   if (userData !=userLoggedIn){
+//     return res.send({status :false , msg:"invalid user id"})
+//   }
+
+//   let userId = req.params.userId;
+//   let userDetails = await userModel.findById(userId);
+//   if (!userDetails)
+//     return res.send({ status: false, msg: "No such user exists" });
+
+//   res.send({ status: true, data: userDetails });
+
+// };
+// module.exports.Userdetils = Userdetils
+
+
+// const updatprofile= async function (req, res) {
+// try{
+//   let token = req.headers["x-Auth-token"];
+//   if (!token) token = req.headers["x-auth-token"];
+  
+//   if (!token) return res.send({ status: false, msg: "token is invalid" });
+  
+//   let userId = req.params.userId;
+//   let user = await userModel.findById(userId);
+
+//   if (!user) {
+//     return res.send("No such user exists");
+//   }
+
+//   let userData = req.body;
+//   let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData);
+//   res.send({ status: updatedUser, data: updatedUser });
+//  }
+//  catch(err){
+//   res.status(405).send({msg:"error",error:err})
+//  }
+// };
+// module.exports.updatprofile = updatprofile
+
+
+
+
